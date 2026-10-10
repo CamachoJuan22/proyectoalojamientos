@@ -1,1 +1,38 @@
-<p>inicio works!</p>
+<section class="hero text-center rounded-3 mb-5">
+  <h1 class="display-5 fw-bold">Alojamientos LR</h1>
+  <p class="lead mx-auto hero-descripcion">
+    Encuentra el lugar ideal para tu próxima estancia. Explora apartamentos,
+    casas y cabañas en las ciudades más visitadas de Colombia, compara
+    precios y cotiza tu reserva en segundos.
+  </p>
+  <a class="btn btn-primary btn-lg" routerLink="/alojamientos">Buscar alojamientos</a>
+</section>
+
+<section>
+  <h2 class="h4 mb-3">Alojamientos destacados</h2>
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2 text-muted">Cargando alojamientos...</p>
+    </div>
+  } @else if (hayError) {
+    <div class="alert alert-danger">
+      No se pudieron cargar los alojamientos destacados. Intenta de nuevo más tarde.
+    </div>
+  } @else if (destacados.length === 0) {
+    <div class="alert alert-info">Por ahora no hay alojamientos destacados.</div>
+  } @else {
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      @for (alojamiento of destacados; track alojamiento.id) {
+        <div class="col">
+          <app-alojamiento-card [alojamiento]="alojamiento"></app-alojamiento-card>
+        </div>
+      }
+    </div>
+
+    <div class="text-center mt-4">
+      <a class="btn btn-outline-primary" routerLink="/alojamientos">Ver todos los alojamientos</a>
+    </div>
+  }
+</section>

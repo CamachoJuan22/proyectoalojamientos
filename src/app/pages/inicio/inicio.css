@@ -1,0 +1,8 @@
+.hero {
+  background-color: #f1f5f9;
+  padding: 4rem 1.5rem;
+}
+
+.hero-descripcion {
+  max-width: 640px;
+}
