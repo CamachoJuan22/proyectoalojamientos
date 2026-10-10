@@ -1,0 +1,4 @@
+.tarjeta-imagen {
+  height: 200px;
+  object-fit: cover;
+}

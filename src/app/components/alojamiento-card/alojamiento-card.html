@@ -1,0 +1,37 @@
+<div class="card h-100 shadow-sm">
+  <img
+    [src]="alojamiento.imagenPrincipal"
+    [alt]="alojamiento.nombre"
+    class="card-img-top tarjeta-imagen"
+  />
+
+  <div class="card-body d-flex flex-column">
+    <div class="d-flex justify-content-between align-items-start mb-1">
+      <h5 class="card-title mb-0">{{ alojamiento.nombre }}</h5>
+      <span class="badge text-bg-warning ms-2">★ {{ alojamiento.calificacion }}</span>
+    </div>
+
+    <p class="text-muted mb-2">{{ alojamiento.ciudad }} · {{ alojamiento.tipo }}</p>
+
+    <p class="mb-2">
+      Capacidad: {{ alojamiento.capacidad }}
+      {{ alojamiento.capacidad === 1 ? 'huésped' : 'huéspedes' }}
+    </p>
+
+    <div class="mb-3">
+      @for (servicio of alojamiento.servicios; track servicio) {
+        <span class="badge text-bg-light border me-1 mb-1">{{ servicio }}</span>
+      }
+    </div>
+
+    <div class="mt-auto d-flex justify-content-between align-items-center">
+      <strong>
+        {{ alojamiento.precioNoche | currency: 'COP' : '$' : '1.0-0' }}
+        <small class="text-muted fw-normal">/ noche</small>
+      </strong>
+      <a class="btn btn-primary btn-sm" [routerLink]="['/alojamientos', alojamiento.id]">
+        Ver detalle
+      </a>
+    </div>
+  </div>
+</div>
