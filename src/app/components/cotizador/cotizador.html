@@ -1,0 +1,98 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <p class="h4 mb-0">
+      {{ alojamiento.precioNoche | currency: 'COP' : '$' : '1.0-0' }}
+      <small class="text-muted fs-6">/ noche</small>
+    </p>
+    <p class="text-muted small mb-0">
+      Tarifa de limpieza: {{ alojamiento.tarifaLimpieza | currency: 'COP' : '$' : '1.0-0' }}
+    </p>
+
+    <hr />
+
+    <h2 class="h6">Cotiza tu estancia</h2>
+
+    <form (ngSubmit)="cotizar()" novalidate>
+      <div class="mb-3">
+        <label for="fechaLlegada" class="form-label">Fecha de llegada</label>
+        <input
+          id="fechaLlegada"
+          name="fechaLlegada"
+          type="date"
+          class="form-control"
+          [min]="hoy"
+          [(ngModel)]="fechaLlegada"
+          (ngModelChange)="alCambiar()"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="fechaSalida" class="form-label">Fecha de salida</label>
+        <input
+          id="fechaSalida"
+          name="fechaSalida"
+          type="date"
+          class="form-control"
+          [min]="fechaLlegada || hoy"
+          [(ngModel)]="fechaSalida"
+          (ngModelChange)="alCambiar()"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="huespedes" class="form-label">Número de huéspedes</label>
+        <input
+          id="huespedes"
+          name="huespedes"
+          type="number"
+          class="form-control"
+          min="1"
+          [max]="alojamiento.capacidad"
+          [(ngModel)]="huespedes"
+          (ngModelChange)="alCambiar()"
+        />
+        <div class="form-text">Capacidad máxima: {{ alojamiento.capacidad }}</div>
+      </div>
+
+      @if (errores.length > 0) {
+        <div class="alert alert-danger py-2" role="alert">
+          <ul class="mb-0 ps-3">
+            @for (error of errores; track error) {
+              <li>{{ error }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100">Calcular cotización</button>
+    </form>
+
+    @if (cotizacion) {
+      <hr />
+      <h3 class="h6">Resumen de la cotización</h3>
+
+      <div class="d-flex justify-content-between small mb-1">
+        <span>
+          {{ cotizacion.precioNoche | currency: 'COP' : '$' : '1.0-0' }} ×
+          {{ cotizacion.noches }} {{ cotizacion.noches === 1 ? 'noche' : 'noches' }}
+        </span>
+        <span>{{ cotizacion.subtotal | currency: 'COP' : '$' : '1.0-0' }}</span>
+      </div>
+
+      <div class="d-flex justify-content-between small mb-1">
+        <span>Tarifa de limpieza</span>
+        <span>{{ cotizacion.tarifaLimpieza | currency: 'COP' : '$' : '1.0-0' }}</span>
+      </div>
+
+      <div class="d-flex justify-content-between small mb-2">
+        <span>Tarifa de servicio (10 %)</span>
+        <span>{{ cotizacion.tarifaServicio | currency: 'COP' : '$' : '1.0-0' }}</span>
+      </div>
+
+      <div class="d-flex justify-content-between fw-bold border-top pt-2">
+        <span>Total</span>
+        <span>{{ cotizacion.total | currency: 'COP' : '$' : '1.0-0' }}</span>
+      </div>
+    }
+  </div>
+</div>

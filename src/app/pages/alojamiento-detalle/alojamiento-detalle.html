@@ -117,16 +117,10 @@
 
     <!-- Columna lateral: precio (aquí irá la cotización en el siguiente paso) -->
     <div class="col-12 col-lg-4">
-      <div class="card shadow-sm lateral-sticky">
-        <div class="card-body">
-          <p class="h4 mb-0">
-            {{ alojamiento.precioNoche | currency: 'COP' : '$' : '1.0-0' }}
-            <small class="text-muted fs-6">/ noche</small>
-          </p>
-          <p class="text-muted small mb-0">
-            Tarifa de limpieza:
-            {{ alojamiento.tarifaLimpieza | currency: 'COP' : '$' : '1.0-0' }}
-          </p>
+      <!-- Columna lateral: cotización -->
+      <div class="col-12 col-lg-4">
+        <div class="lateral-sticky">
+          <app-cotizador [alojamiento]="alojamiento"></app-cotizador>
         </div>
       </div>
     </div>
