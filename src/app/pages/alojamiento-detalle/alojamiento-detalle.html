@@ -1,1 +1,134 @@
-<p>alojamiento-detalle works!</p>
+<a routerLink="/alojamientos" class="btn btn-link px-0 mb-3">← Volver al listado</a>
+
+@if (cargando) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-2 text-muted">Cargando alojamiento...</p>
+  </div>
+} @else if (hayError) {
+  <div class="alert alert-danger">
+    No se pudo cargar el alojamiento. Intenta de nuevo más tarde.
+  </div>
+} @else if (!alojamiento) {
+  <div class="alert alert-warning">
+    El alojamiento que buscas no existe o no está disponible.
+    <a routerLink="/alojamientos" class="alert-link">Ver alojamientos disponibles</a>
+  </div>
+} @else {
+  <div class="mb-3">
+    <h1 class="h3 mb-1">{{ alojamiento.nombre }}</h1>
+    <p class="text-muted mb-0">
+      {{ alojamiento.ubicacion }} · {{ alojamiento.tipo }}
+      · <span class="badge text-bg-warning">★ {{ alojamiento.calificacion }}</span>
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <!-- Galería -->
+      <img
+        [src]="imagenSeleccionada"
+        [alt]="alojamiento.nombre"
+        class="img-fluid rounded w-100 imagen-principal mb-2"
+      />
+
+      @if (alojamiento.imagenes.length > 1) {
+        <div class="d-flex gap-2 mb-4">
+          @for (imagen of alojamiento.imagenes; track imagen) {
+            <img
+              [src]="imagen"
+              [alt]="'Miniatura de ' + alojamiento.nombre"
+              class="miniatura rounded"
+              [class.miniatura-activa]="imagen === imagenSeleccionada"
+              (click)="seleccionarImagen(imagen)"
+            />
+          }
+        </div>
+      }
+
+      <!-- Descripción -->
+      <h2 class="h5">Descripción</h2>
+      <p>{{ alojamiento.descripcion }}</p>
+      <p class="text-muted">
+        <strong>Ciudad:</strong> {{ alojamiento.ciudad }} ·
+        <strong>Ubicación:</strong> {{ alojamiento.ubicacion }}
+      </p>
+
+      <!-- Características -->
+      <div class="row row-cols-2 row-cols-md-4 g-2 text-center mb-4">
+        <div class="col">
+          <div class="border rounded p-2">
+            <div class="fw-bold">{{ alojamiento.capacidad }}</div>
+            <small class="text-muted">Huéspedes</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded p-2">
+            <div class="fw-bold">{{ alojamiento.habitaciones }}</div>
+            <small class="text-muted">Habitaciones</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded p-2">
+            <div class="fw-bold">{{ alojamiento.camas }}</div>
+            <small class="text-muted">Camas</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded p-2">
+            <div class="fw-bold">{{ alojamiento.banos }}</div>
+            <small class="text-muted">Baños</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servicios -->
+      <h2 class="h5">Servicios</h2>
+      <div class="mb-4">
+        @for (servicio of alojamiento.servicios; track servicio) {
+          <span class="badge text-bg-light border me-1 mb-1">{{ servicio }}</span>
+        }
+      </div>
+
+      <!-- Reglas -->
+      <h2 class="h5">Reglas básicas</h2>
+      <ul class="mb-4">
+        @for (regla of alojamiento.reglas; track regla) {
+          <li>{{ regla }}</li>
+        }
+      </ul>
+
+      <!-- Reseñas -->
+      <h2 class="h5">Reseñas</h2>
+      @if (resenas.length === 0) {
+        <p class="text-muted">Este alojamiento aún no tiene reseñas.</p>
+      } @else {
+        @for (resena of resenas; track resena.id) {
+          <div class="card card-body mb-2">
+            <div class="d-flex justify-content-between">
+              <strong>{{ resena.usuario }}</strong>
+              <span class="badge text-bg-warning">★ {{ resena.calificacion }}</span>
+            </div>
+            <p class="mb-0 mt-1">{{ resena.comentario }}</p>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- Columna lateral: precio (aquí irá la cotización en el siguiente paso) -->
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm lateral-sticky">
+        <div class="card-body">
+          <p class="h4 mb-0">
+            {{ alojamiento.precioNoche | currency: 'COP' : '$' : '1.0-0' }}
+            <small class="text-muted fs-6">/ noche</small>
+          </p>
+          <p class="text-muted small mb-0">
+            Tarifa de limpieza:
+            {{ alojamiento.tarifaLimpieza | currency: 'COP' : '$' : '1.0-0' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

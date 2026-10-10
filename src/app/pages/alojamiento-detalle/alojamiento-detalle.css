@@ -1,0 +1,23 @@
+.imagen-principal {
+  height: 380px;
+  object-fit: cover;
+}
+
+.miniatura {
+  width: 90px;
+  height: 65px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.7;
+  border: 2px solid transparent;
+}
+
+.miniatura-activa {
+  opacity: 1;
+  border-color: #0d6efd;
+}
+
+.lateral-sticky {
+  position: sticky;
+  top: 1rem;
+}
