@@ -1,1 +1,88 @@
-<p>alojamiento-lista works!</p>
+<h1 class="h3 mb-4">Alojamientos disponibles</h1>
+
+<form class="card card-body mb-4" (ngSubmit)="$event" #formFiltros="ngForm">
+  <div class="row g-3 align-items-end">
+    <div class="col-12 col-md-6 col-lg-3">
+      <label for="ciudad" class="form-label">Ciudad</label>
+      <select id="ciudad" name="ciudad" class="form-select" [(ngModel)]="filtroCiudad">
+        <option value="">Todas</option>
+        @for (ciudad of ciudades; track ciudad) {
+          <option [value]="ciudad">{{ ciudad }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3">
+      <label for="tipo" class="form-label">Tipo de alojamiento</label>
+      <select id="tipo" name="tipo" class="form-select" [(ngModel)]="filtroTipo">
+        <option value="">Todos</option>
+        @for (tipo of tipos; track tipo) {
+          <option [value]="tipo">{{ tipo }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <label for="huespedes" class="form-label">Huéspedes</label>
+      <input
+        id="huespedes"
+        name="huespedes"
+        type="number"
+        min="1"
+        class="form-control"
+        placeholder="Ej: 2"
+        [(ngModel)]="filtroHuespedes"
+      />
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <label for="precioMax" class="form-label">Precio máx. / noche</label>
+      <input
+        id="precioMax"
+        name="precioMax"
+        type="number"
+        min="1"
+        class="form-control"
+        placeholder="Ej: 300000"
+        [(ngModel)]="filtroPrecioMax"
+      />
+    </div>
+
+    <div class="col-12 col-lg-2">
+      <button type="button" class="btn btn-outline-secondary w-100" (click)="limpiarFiltros()">
+        Limpiar filtros
+      </button>
+    </div>
+  </div>
+</form>
+
+@if (cargando) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-2 text-muted">Cargando alojamientos...</p>
+  </div>
+} @else if (hayError) {
+  <div class="alert alert-danger">
+    No se pudieron cargar los alojamientos. Intenta de nuevo más tarde.
+  </div>
+} @else if (alojamientosFiltrados.length === 0) {
+  <div class="alert alert-info">
+    No se encontraron alojamientos con los filtros seleccionados.
+    <button type="button" class="btn btn-link p-0 align-baseline" (click)="limpiarFiltros()">
+      Limpiar filtros
+    </button>
+  </div>
+} @else {
+  <p class="text-muted">
+    {{ alojamientosFiltrados.length }}
+    {{ alojamientosFiltrados.length === 1 ? 'alojamiento encontrado' : 'alojamientos encontrados' }}
+  </p>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @for (alojamiento of alojamientosFiltrados; track alojamiento.id) {
+      <div class="col">
+        <app-alojamiento-card [alojamiento]="alojamiento"></app-alojamiento-card>
+      </div>
+    }
+  </div>
+}
